@@ -1,6 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-import { commit, store } from '@/store';
+import { store } from '@/store';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -13,7 +13,8 @@ export default class HelloWorld extends Vue {
   }
 
   incr() {
-    commit('MODULE_INCREMENT2', undefined);
+    store.commit('ROOT_INCREMENT', 1);
+    store.dispatch('incrementFromTo', 10);
   }
 
 }

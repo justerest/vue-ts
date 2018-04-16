@@ -1,33 +1,36 @@
 import Vue from 'vue';
-import Vuex, { MutationTree } from 'vuex';
+import Vuex from 'vuex';
 
-import { module, ModuleMutationTypes } from './module';
+import { ActionTypes } from '@/action-types';
+import { AppActionsTree } from '@/actions-tree';
+import { MutationTypes } from '@/mutation-types';
+import { AppMutationsTree } from '@/mutations-tree';
+
+import { module } from './module';
 
 Vue.use(Vuex);
 
 class RootState {
-  count = 1;
-}
-
-interface RootMutationTypes {
-  ROOT_INCREMENT: number;
-}
-
-type AllMutations = RootMutationTypes & ModuleMutationTypes;
-
-/** Root mutations  */
-export function commit<T extends keyof AllMutations>(type: T, payload: AllMutations[T]) {
-  store.commit(type, payload);
+  count = 0;
 }
 
 export const store = new Vuex.Store({
+
   state: new RootState(),
   modules: { module },
+
   mutations: {
 
     ROOT_INCREMENT(state, payload) {
       state.count += payload;
     },
 
-  } as AppMutationsTree<RootState, RootMutationTypes>,
+    ROOT_INCREMENT5(state) {
+      state.count += 5;
+    },
+
+  } as AppMutationsTree<RootState, MutationTypes>,
+
 });
+
+store.dispatch('incrementFromTo', 2);
