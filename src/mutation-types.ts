@@ -1,3 +1,6 @@
+/**
+ * @type {{[mutationName]: payloadType}}
+ */
 export interface MutationTypes {
   ROOT_INCREMENT: number;
   ROOT_INCREMENT5: void;
