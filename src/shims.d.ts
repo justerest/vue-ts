@@ -8,8 +8,8 @@ declare module 'vuex' {
   import * as Vuex from '@/../node_modules/vuex';
   export * from '@/../node_modules/vuex';
 
-  import { ActionTypes } from '@/action-types';
-  import { MutationTypes } from '@/mutation-types';
+  import { ActionTypes } from '@/vuex/action-types';
+  import { MutationTypes } from '@/vuex/mutation-types';
 
   // FIXME: payload is required
   export class Store<S> extends Vuex.Store<S> {

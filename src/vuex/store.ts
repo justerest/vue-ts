@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { ActionTypes } from '@/action-types';
-import { AppActionsTree } from '@/actions-tree';
-import { MutationTypes } from '@/mutation-types';
-import { AppMutationsTree } from '@/mutations-tree';
+import { ActionTypes } from '@/vuex/action-types';
+import { MutationTypes } from '@/vuex/mutation-types';
+import { AppActionsTree } from '@/vuex/type-helpers/actions-tree';
+import { AppMutationsTree } from '@/vuex/type-helpers/mutations-tree';
 
-import { module } from './module';
+import { module } from './modules/module';
 
 Vue.use(Vuex);
 
@@ -34,3 +34,4 @@ export const store = new Vuex.Store({
 });
 
 store.dispatch('incrementFromTo', 2);
+store.commit('ROOT_INCREMENT', 2);

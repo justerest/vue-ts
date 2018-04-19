@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { ActionTypes } from '@/action-types';
-import { AppActionsTree } from '@/actions-tree';
-import { MutationTypes } from '@/mutation-types';
-import { AppMutationsTree } from '@/mutations-tree';
+import { ActionTypes } from '@/vuex/action-types';
+import { MutationTypes } from '@/vuex/mutation-types';
+import { AppActionsTree } from '@/vuex/type-helpers/actions-tree';
+import { AppMutationsTree } from '@/vuex/type-helpers/mutations-tree';
 
 Vue.use(Vuex);
 

@@ -1,6 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-import { store } from '@/store';
+import { store } from '@/vuex/store';
 
 @Component
 export default class HelloWorld extends Vue {
