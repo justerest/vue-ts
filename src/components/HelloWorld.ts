@@ -16,7 +16,7 @@ export default class HelloWorld extends Vue {
 
   incr() {
     store.commit(Mutations.ROOT_INCREMENT, 1);
-    store.dispatch(Actions.incrementFromTo, 10);
+    store.dispatch(Actions.incrementAllModules, 10);
   }
 
 }

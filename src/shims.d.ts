@@ -1,4 +1,3 @@
-
 declare module '*.vue' {
   import Vue from 'vue';
   export default Vue;
@@ -10,6 +9,7 @@ declare module 'vuex' {
 
   import { ActionTypes } from '@/vuex/action-types';
   import { MutationTypes } from '@/vuex/mutation-types';
+  import { RootState } from '@/vuex/store';
 
   // FIXME: payload is required
   export class Store<S> extends Vuex.Store<S> {
@@ -22,6 +22,12 @@ declare module 'vuex' {
     dispatch: <T extends keyof ActionTypes>
     (type: T, payload: ActionTypes[T], options?: Vuex.DispatchOptions) => Promise<void>;
 
+  }
+
+  /** @override check payload type for commit/dispatch */
+  export interface ActionContext<S> extends Vuex.ActionContext<S, RootState> {
+    commit: Store<S>['commit'];
+    dispatch: Store<S>['dispatch'];
   }
 
   const DEFAULT: {

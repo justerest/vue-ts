@@ -26,10 +26,9 @@ export const module = {
 
   actions: {
 
-    [Actions.incrementFromTo]({ commit, dispatch }, payload) {
-      for (let i = 0; i < payload; i++) {
-        commit(Mutations.MODULE_INCREMENT, i);
-      }
+    [Actions.incrementAllModules]({ commit, state, rootState }, payload) {
+      if (state.moduleCount) commit(Mutations.MODULE_INCREMENT, payload);
+      if (rootState.count) commit(Mutations.ROOT_INCREMENT, payload);
     },
 
   } as AppActionsTree<ModuleState, MutationTypes, ActionTypes>,

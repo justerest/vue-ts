@@ -10,7 +10,7 @@ import { module } from './modules/module';
 
 Vue.use(Vuex);
 
-class RootState {
+export class RootState {
   count = 0;
 }
 
@@ -44,5 +44,5 @@ export const store = new Vuex.Store({
 
 });
 
-store.dispatch(Actions.incrementFromTo, 2);
+store.dispatch(Actions.incrementAllModules, 2);
 store.commit(Mutations.ROOT_INCREMENT, 2);

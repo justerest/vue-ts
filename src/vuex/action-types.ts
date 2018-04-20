@@ -1,5 +1,5 @@
 export enum Actions {
-  incrementFromTo = 'incrementFromTo',
+  incrementAllModules = 'incrementAllModules',
   actionWithoutPayload = 'actionWithoutPayload',
 }
 
@@ -7,6 +7,6 @@ export enum Actions {
  * @type {{[Actions]: payloadType}}
  */
 export interface ActionTypes {
-  [Actions.incrementFromTo]: number;
+  [Actions.incrementAllModules]: number;
   [Actions.actionWithoutPayload]: void;
 }
