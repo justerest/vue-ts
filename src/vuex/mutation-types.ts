@@ -1,9 +1,16 @@
+export enum Mutations {
+  ROOT_INCREMENT = 'ROOT_INCREMENT',
+  ROOT_INCREMENT5 = 'ROOT_INCREMENT5',
+  MODULE_INCREMENT = 'MODULE_INCREMENT',
+  MODULE_INCREMENT2 = 'MODULE_INCREMENT2',
+}
+
 /**
- * @type {{[mutationName]: payloadType}}
+ * @type {{[Mutations]: payloadType}}
  */
 export interface MutationTypes {
-  ROOT_INCREMENT: number;
-  ROOT_INCREMENT5: void;
-  MODULE_INCREMENT: number;
-  MODULE_INCREMENT2: void;
+  [Mutations.ROOT_INCREMENT]: number;
+  [Mutations.ROOT_INCREMENT5]: void;
+  [Mutations.MODULE_INCREMENT]: number;
+  [Mutations.MODULE_INCREMENT2]: void;
 }

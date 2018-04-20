@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { ActionTypes } from '@/vuex/action-types';
-import { MutationTypes } from '@/vuex/mutation-types';
+import { ActionTypes, Actions } from '@/vuex/action-types';
+import { MutationTypes, Mutations } from '@/vuex/mutation-types';
 import { AppActionsTree } from '@/vuex/type-helpers/actions-tree';
 import { AppMutationsTree } from '@/vuex/type-helpers/mutations-tree';
 
@@ -16,22 +16,33 @@ class RootState {
 
 export const store = new Vuex.Store({
 
+  strict: true,
+
   state: new RootState(),
+
   modules: { module },
 
   mutations: {
 
-    ROOT_INCREMENT(state, payload) {
+    [Mutations.ROOT_INCREMENT](state, payload) {
       state.count += payload;
     },
 
-    ROOT_INCREMENT5(state) {
+    [Mutations.ROOT_INCREMENT5](state) {
       state.count += 5;
     },
 
   } as AppMutationsTree<RootState, MutationTypes>,
 
+  actions: {
+
+    [Actions.actionWithoutPayload]({ commit }) {
+      commit(Mutations.ROOT_INCREMENT5, undefined);
+    },
+
+  } as AppActionsTree<RootState, MutationTypes, ActionTypes>,
+
 });
 
-store.dispatch('incrementFromTo', 2);
-store.commit('ROOT_INCREMENT', 2);
+store.dispatch(Actions.incrementFromTo, 2);
+store.commit(Mutations.ROOT_INCREMENT, 2);

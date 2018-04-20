@@ -6,7 +6,7 @@ export type AppActionsTree<S, MT, AT> = {
   : (injectee: ActionContext<S>, payload: AT[P]) => void;
 };
 
-interface ActionContext<S> {
+export interface ActionContext<S> {
   dispatch: Store<S>['dispatch'];
   commit: Store<S>['commit'];
   state: S;
