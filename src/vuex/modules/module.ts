@@ -18,7 +18,7 @@ export const module = {
 
   mutations: {
 
-    MODULE_INCREMENT(state, payload) {
+    [Mutations.MODULE_INCREMENT](state, payload) {
       state.moduleCount += payload;
     },
 
