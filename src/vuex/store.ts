@@ -38,9 +38,6 @@ export const store = new Vuex.Store({
       commit(Mutations.ROOT_INCREMENT5, undefined);
     },
 
-  } as AppActionsTree<RootState, MutationTypes, ActionTypes>,
+  } as AppActionsTree<RootState, ActionTypes>,
 
 });
-
-store.dispatch(Actions.incrementAllModules, 2);
-store.commit(Mutations.ROOT_INCREMENT, 2);

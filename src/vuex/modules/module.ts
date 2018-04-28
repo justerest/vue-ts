@@ -31,6 +31,6 @@ export const module = {
       if (rootState.count) commit(Mutations.ROOT_INCREMENT, payload);
     },
 
-  } as AppActionsTree<ModuleState, MutationTypes, ActionTypes>,
+  } as AppActionsTree<ModuleState, ActionTypes>,
 
 };
