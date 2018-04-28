@@ -17,9 +17,7 @@ export class RootState {
 export const store = new Vuex.Store({
 
   strict: true,
-
   state: new RootState(),
-
   modules: { module },
 
   mutations: {
