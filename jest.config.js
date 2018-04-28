@@ -1,11 +1,12 @@
 module.exports = {
+  testMatch: ['**/*.spec.ts'],
   moduleFileExtensions: [
+    'vue',
     'ts',
     'tsx',
     'js',
     'jsx',
     'json',
-    'vue'
   ],
   transform: {
     '^.+\\.vue$': 'vue-jest',
