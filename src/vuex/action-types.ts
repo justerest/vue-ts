@@ -1,12 +1,10 @@
 export enum Actions {
-  incrementAllModules = 'incrementAllModules',
-  actionWithoutPayload = 'actionWithoutPayload',
+  compare = 'compare',
 }
 
 /**
  * @type {{[Actions]: payloadType}}
  */
 export interface ActionTypes {
-  [Actions.incrementAllModules]: number;
-  [Actions.actionWithoutPayload]: void;
+  [Actions.compare]: number;
 }

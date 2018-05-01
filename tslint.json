@@ -18,6 +18,7 @@
     "object-literal-sort-keys": false,
     "no-consecutive-blank-lines": false,
     "member-access": false,
-    "curly": false
+    "curly": false,
+    "one-line": false
   }
 }

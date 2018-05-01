@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import About from './views/About.vue';
-import Home from './views/Home.vue';
+import StartPage from '@/views/StartPage.vue';
+import Deck from './views/Deck';
 
 Vue.use(Router);
 
@@ -11,13 +11,13 @@ export const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home,
+      name: 'start-page',
+      component: StartPage,
     },
     {
-      path: '/about',
-      name: 'about',
-      component: About,
+      path: '/deck',
+      name: 'deck',
+      component: Deck,
     },
   ],
 });
