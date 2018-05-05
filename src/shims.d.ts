@@ -16,11 +16,11 @@ declare module 'vuex' {
 
     /** @override check payload type */
     commit: <T extends keyof MutationTypes>
-    (type: T, payload: MutationTypes[T], options?: Vuex.CommitOptions) => void;
+    (type: T, payload?: MutationTypes[T], options?: Vuex.CommitOptions) => void;
 
     /** @override check payload type */
     dispatch: <T extends keyof ActionTypes>
-    (type: T, payload: ActionTypes[T], options?: Vuex.DispatchOptions) => Promise<void>;
+    (type: T, payload?: ActionTypes[T], options?: Vuex.DispatchOptions) => Promise<void>;
 
   }
 
