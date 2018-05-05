@@ -23,10 +23,10 @@ export default class Deck extends Vue {
   }
 
   created() {
-    store.commit(Mutations.CREATE_DECK, undefined);
+    store.commit(Mutations.CREATE_DECK);
     this.timeoutContainer = setTimeout(() => {
       this.isDisabled = false;
-      this.cards.forEach((_, i) => store.commit(Mutations.FLIP_CARD, i));
+      this.cards.forEach((_, i) => store.commit(Mutations.CLOSE, i));
     }, FIVE_SECONDS);
   }
 

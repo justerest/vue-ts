@@ -9,17 +9,17 @@ import { AppActionsTree } from '@/vuex/type-helpers/actions-tree';
 
 Vue.use(Vuex);
 
-const DELAY = 1000;
+const ONE_SECOND = 1000;
 
 export class RootState {
   cards = getRandomSet();
+  score = 0;
+  pairsCount = 0;
+  isAnimating = false;
   choosen?: {
     name: string,
     index: number,
   };
-  isAnimated = false;
-  pairs = 0;
-  score = 0;
 }
 
 export const store = new Vuex.Store({
@@ -29,73 +29,88 @@ export const store = new Vuex.Store({
 
   mutations: {
 
-    [Mutations.CREATE_DECK]: (state) => Object.assign(state, new RootState()),
-
-    [Mutations.FLIP_CARD]: (state, payload) => {
-      const card = state.cards[payload];
-      card.isOpen = !card.isOpen;
+    [Mutations.CREATE_DECK](state) {
+      Object.assign(state, new RootState());
     },
 
-    [Mutations.CHOSE]: (state, payload) => {
+    [Mutations.OPEN](state, payload) {
+      state.cards[payload].isOpen = true;
+    },
+
+    [Mutations.CLOSE](state, payload) {
+      state.cards[payload].isOpen = false;
+    },
+
+    [Mutations.CHOSE](state, payload) {
       const card = state.cards[payload];
       state.choosen = { index: payload, name: card.name };
     },
 
-    [Mutations.UNCHOSE]: (state) => {
+    [Mutations.UNCHOSE](state) {
       state.choosen = undefined;
     },
 
-    [Mutations.DELETE]: (state, payload) => {
+    [Mutations.DELETE](state, payload) {
       const card = state.cards[payload];
       card.isDeleted = true;
     },
 
-    [Mutations.TOGGLE_ANIMATION]: (state) => {
-      state.isAnimated = !state.isAnimated;
+    [Mutations.START_ANIMATION](state) {
+      state.isAnimating = true;
     },
 
-    [Mutations.INCREMENT_PAIRS]: (state) => {
-      state.pairs++;
+    [Mutations.STOP_ANIMATION](state) {
+      state.isAnimating = false;
     },
 
-    [Mutations.INCREMENT_SCORE]: (state, payload) => {
-      state.score += payload;
+    [Mutations.INCREMENT_PAIRS](state) {
+      state.pairsCount++;
+    },
+
+    [Mutations.INCREMENT_SCORE](state) {
+      state.score += 42 * (state.cards.length / 2 - state.pairsCount);
+    },
+
+    [Mutations.DECREMENT_SCORE](state) {
+      state.score -= 42 * state.pairsCount;
     },
 
   } as AppMutationsTree<RootState, MutationTypes>,
 
   actions: {
 
-    async [Actions.compare]({ state, commit }, payload) {
+    async [Actions.compare]({ state, commit }, cardIndex) {
       if (
-        state.isAnimated ||
-        state.choosen && state.choosen.index === payload
+        state.isAnimating ||
+        state.choosen && state.choosen.index === cardIndex
       ) return;
 
-      commit(Mutations.FLIP_CARD, payload);
+      commit(Mutations.OPEN, cardIndex);
 
-      if (state.choosen) {
-        const oldIndex = state.choosen.index;
+      if (!state.choosen) {
+        commit(Mutations.CHOSE, cardIndex);
+      }
+      else {
+        commit(Mutations.START_ANIMATION);
+        await delay(ONE_SECOND);
 
-        commit(Mutations.TOGGLE_ANIMATION, undefined);
-        await new Promise((resolve) => setTimeout(resolve, DELAY));
+        const prevCardIndex = state.choosen.index;
 
-        if (state.choosen.name === state.cards[payload].name) {
-          commit(Mutations.DELETE, oldIndex);
-          commit(Mutations.DELETE, payload);
-          commit(Mutations.INCREMENT_PAIRS, undefined);
-          commit(Mutations.INCREMENT_SCORE, 42 * (state.cards.length / 2 - state.pairs));
+        if (state.choosen.name === state.cards[cardIndex].name) {
+          commit(Mutations.DELETE, prevCardIndex);
+          commit(Mutations.DELETE, cardIndex);
+          commit(Mutations.INCREMENT_PAIRS);
+          commit(Mutations.INCREMENT_SCORE);
         }
         else {
-          commit(Mutations.FLIP_CARD, oldIndex);
-          commit(Mutations.FLIP_CARD, payload);
-          commit(Mutations.INCREMENT_SCORE, -42 * state.pairs);
+          commit(Mutations.CLOSE, prevCardIndex);
+          commit(Mutations.CLOSE, cardIndex);
+          commit(Mutations.DECREMENT_SCORE);
         }
+        commit(Mutations.UNCHOSE);
 
-        commit(Mutations.TOGGLE_ANIMATION, undefined);
-        commit(Mutations.UNCHOSE, undefined);
+        commit(Mutations.STOP_ANIMATION);
       }
-      else commit(Mutations.CHOSE, payload);
     },
 
   } as AppActionsTree<RootState, ActionTypes>,
@@ -123,6 +138,10 @@ function getDeck() {
 
 function getRandomSet() {
   const set = getDeck().sort(() => Math.random() - 0.5).slice(0, 9);
-  const doubleSet = set.map((card) => new Card(card.name)).concat(set);
+  const doubleSet = set.map(({ name }) => new Card(name)).concat(set);
   return doubleSet.sort(() => Math.random() - 0.5);
+}
+
+async function delay(timeout: number) {
+  await new Promise((resolve) => setTimeout(resolve, timeout));
 }
