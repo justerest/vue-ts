@@ -29,7 +29,7 @@
     "lint-staged": "^7.0.5",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
-    "ts-jest": "^22.4.4",
+    "ts-jest": "^22.4.5",
     "vue-template-compiler": "^2.5.16"
   },
   "browserslist": [
