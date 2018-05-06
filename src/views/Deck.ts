@@ -11,7 +11,6 @@ const FIVE_SECONDS = 5000;
 })
 export default class Deck extends Vue {
 
-  isDisabled = true;
   timeoutContainer!: NodeJS.Timer;
 
   get cards() {
@@ -25,7 +24,6 @@ export default class Deck extends Vue {
   created() {
     store.commit(Mutations.CREATE_DECK);
     this.timeoutContainer = setTimeout(() => {
-      this.isDisabled = false;
       this.cards.forEach((_, i) => store.commit(Mutations.CLOSE, i));
     }, FIVE_SECONDS);
   }

@@ -1,5 +1,5 @@
 <template>
-  <div :style="{'pointer-events': isDisabled ? 'none' : 'all'}">
+  <div>
     {{score}}
     <div class="deck">
       <card v-for="(_, i) in cards" :key="i" :index="i"> </card>

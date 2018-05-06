@@ -80,11 +80,6 @@ export const store = new Vuex.Store({
   actions: {
 
     async [Actions.compare]({ state, commit }, cardIndex) {
-      if (
-        state.isAnimating ||
-        state.choosen && state.choosen.index === cardIndex
-      ) return;
-
       commit(Mutations.OPEN, cardIndex);
 
       if (!state.choosen) {
