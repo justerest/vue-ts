@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import StartPage from '@/views/StartPage.vue';
-import Deck from './views/Deck';
+import Deck from '@/views/Deck';
 
 Vue.use(Router);
 
