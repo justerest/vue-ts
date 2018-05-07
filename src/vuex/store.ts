@@ -41,18 +41,19 @@ export const store = new Vuex.Store({
       state.cards[payload].isOpen = false;
     },
 
-    [Mutations.CHOSE](state, payload) {
-      const card = state.cards[payload];
-      state.choosen = { index: payload, name: card.name };
+    [Mutations.CHOSE](state, cardIndex) {
+      state.choosen = {
+        index: cardIndex,
+        name: state.cards[cardIndex].name,
+      };
     },
 
     [Mutations.UNCHOSE](state) {
       state.choosen = undefined;
     },
 
-    [Mutations.DELETE](state, payload) {
-      const card = state.cards[payload];
-      card.isDeleted = true;
+    [Mutations.DELETE](state, cardIndex) {
+      state.cards[cardIndex].isDeleted = true;
     },
 
     [Mutations.START_ANIMATION](state) {
@@ -89,16 +90,14 @@ export const store = new Vuex.Store({
         commit(Mutations.START_ANIMATION);
         await delay(ONE_SECOND);
 
-        const prevCardIndex = state.choosen.index;
-
         if (state.choosen.name === state.cards[cardIndex].name) {
-          commit(Mutations.DELETE, prevCardIndex);
+          commit(Mutations.DELETE, state.choosen.index);
           commit(Mutations.DELETE, cardIndex);
           commit(Mutations.INCREMENT_PAIRS);
           commit(Mutations.INCREMENT_SCORE);
         }
         else {
-          commit(Mutations.CLOSE, prevCardIndex);
+          commit(Mutations.CLOSE, state.choosen.index);
           commit(Mutations.CLOSE, cardIndex);
           commit(Mutations.DECREMENT_SCORE);
         }
@@ -112,7 +111,20 @@ export const store = new Vuex.Store({
 
 });
 
-function getDeck() {
+function getRandomSet(setLength = 9) {
+  const set = getCardNames()
+    .sort(randomSort)
+    .slice(0, setLength);
+
+  return set.concat(set)
+    .sort(randomSort)
+    .map((cardName) => new Card(cardName));
+}
+
+/**
+ * @returns ['0', '1', ..., 'A']
+ */
+function getCardNames() {
   const deck = [];
   const values = [];
   const suits = ['C', 'D', 'H', 'S'];
@@ -128,13 +140,11 @@ function getDeck() {
     }
   }
 
-  return deck.map((cardName) => new Card(cardName));
+  return deck;
 }
 
-function getRandomSet() {
-  const set = getDeck().sort(() => Math.random() - 0.5).slice(0, 9);
-  const doubleSet = set.map(({ name }) => new Card(name)).concat(set);
-  return doubleSet.sort(() => Math.random() - 0.5);
+function randomSort() {
+  return Math.random() - 0.5;
 }
 
 async function delay(timeout: number) {
