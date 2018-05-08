@@ -11,7 +11,9 @@ const FIVE_SECONDS = 5000;
 })
 export default class Deck extends Vue {
 
-  timeoutContainer!: NodeJS.Timer;
+  get isGameStarted() {
+    return store.state.isGameStarted;
+  }
 
   get cards() {
     return store.state.cards;
@@ -22,14 +24,12 @@ export default class Deck extends Vue {
   }
 
   created() {
-    store.commit(Mutations.CREATE_DECK);
-    this.timeoutContainer = setTimeout(() => {
-      this.cards.forEach((_, i) => store.commit(Mutations.CLOSE, i));
-    }, FIVE_SECONDS);
-  }
-
-  destroyed() {
-    clearTimeout(this.timeoutContainer);
+    if (!this.isGameStarted) {
+      store.commit(Mutations.START_GAME);
+      setTimeout(() => {
+        this.cards.forEach((_, i) => store.commit(Mutations.CLOSE, i));
+      }, FIVE_SECONDS);
+    }
   }
 
 }

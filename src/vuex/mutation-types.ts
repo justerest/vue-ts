@@ -1,5 +1,5 @@
 export const enum Mutations {
-  CREATE_DECK = 'CREATE_DECK',
+  START_GAME = 'START_GAME',
   OPEN = 'OPEN',
   CLOSE = 'CLOSE',
   CHOSE = 'CHOSE',
@@ -10,13 +10,14 @@ export const enum Mutations {
   INCREMENT_PAIRS = 'INCREMENT_PAIRS',
   INCREMENT_SCORE = 'INCREMENT_SCORE',
   DECREMENT_SCORE = 'DECREMENT_SCORE',
+  RESET = 'RESET',
 }
 
 /**
  * @type {{[Mutations]: payloadType}}
  */
 export interface MutationTypes {
-  [Mutations.CREATE_DECK]: void;
+  [Mutations.START_GAME]: void;
   [Mutations.OPEN]: number;
   [Mutations.CLOSE]: number;
   [Mutations.CHOSE]: number;
@@ -27,4 +28,5 @@ export interface MutationTypes {
   [Mutations.INCREMENT_PAIRS]: void;
   [Mutations.INCREMENT_SCORE]: void;
   [Mutations.DECREMENT_SCORE]: void;
+  [Mutations.RESET]: void;
 }

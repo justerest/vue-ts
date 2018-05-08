@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { Card } from '@/Card';
+import { Card } from '@/models/Card';
+import { ActionTypes, Actions } from '@/vuex/action-types';
 import { MutationTypes, Mutations } from '@/vuex/mutation-types';
-import { AppMutationsTree } from '@/vuex/type-helpers/mutations-tree';
-import { Actions, ActionTypes } from '@/vuex/action-types';
 import { AppActionsTree } from '@/vuex/type-helpers/actions-tree';
+import { AppMutationsTree } from '@/vuex/type-helpers/mutations-tree';
 
 Vue.use(Vuex);
 
@@ -13,9 +13,10 @@ const ONE_SECOND = 1000;
 
 export class RootState {
   cards = getRandomSet();
-  score = 0;
-  pairsCount = 0;
   isAnimating = false;
+  isGameStarted = false;
+  pairsCount = 0;
+  score = 0;
   choosen?: {
     name: string,
     index: number,
@@ -29,16 +30,16 @@ export const store = new Vuex.Store({
 
   mutations: {
 
-    [Mutations.CREATE_DECK](state) {
-      Object.assign(state, new RootState());
+    [Mutations.START_GAME](state) {
+      state.isGameStarted = true;
     },
 
-    [Mutations.OPEN](state, payload) {
-      state.cards[payload].isOpen = true;
+    [Mutations.OPEN](state, cardIndex) {
+      state.cards[cardIndex].isOpen = true;
     },
 
-    [Mutations.CLOSE](state, payload) {
-      state.cards[payload].isOpen = false;
+    [Mutations.CLOSE](state, cardIndex) {
+      state.cards[cardIndex].isOpen = false;
     },
 
     [Mutations.CHOSE](state, cardIndex) {
@@ -76,6 +77,10 @@ export const store = new Vuex.Store({
       state.score -= 42 * state.pairsCount;
     },
 
+    [Mutations.RESET](state) {
+      Object.assign(state, new RootState());
+    },
+
   } as AppMutationsTree<RootState, MutationTypes>,
 
   actions: {
@@ -90,7 +95,11 @@ export const store = new Vuex.Store({
         commit(Mutations.START_ANIMATION);
         await delay(ONE_SECOND);
 
-        if (state.choosen.name === state.cards[cardIndex].name) {
+        const isCompared = (
+          state.choosen.name === state.cards[cardIndex].name &&
+          state.choosen.index !== cardIndex
+        );
+        if (isCompared) {
           commit(Mutations.DELETE, state.choosen.index);
           commit(Mutations.DELETE, cardIndex);
           commit(Mutations.INCREMENT_PAIRS);
@@ -122,18 +131,18 @@ function getRandomSet(setLength = 9) {
 }
 
 /**
- * @returns ['0', '1', ..., 'A']
+ * @returns ['2C', '2D', ..., 'AS']
  */
 function getCardNames() {
   const deck = [];
-  const values = [];
-  const suits = ['C', 'D', 'H', 'S'];
 
-  for (let i = 0; i < 10; i++) {
-    if (i !== 1) values.push(i);
+  const values = [];
+  for (let i = 2; i <= 10; i++) {
+    values.push(i % 10);
   }
   values.push('J', 'Q', 'K', 'A');
 
+  const suits = ['C', 'D', 'H', 'S'];
   for (const value of values) {
     for (const suit of suits) {
       deck.push(value + suit);

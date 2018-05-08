@@ -9,10 +9,6 @@ export default class CardComponent extends Vue {
   @Prop({ type: Number, required: true })
   index!: number;
 
-  get isAnimating() {
-    return store.state.isAnimating;
-  }
-
   get card() {
     return store.state.cards[this.index];
   }
@@ -20,6 +16,10 @@ export default class CardComponent extends Vue {
   get link() {
     const name = this.card.isOpen ? this.card.name : 'suit';
     return `/cards/${name}.png`;
+  }
+
+  get isAnimating() {
+    return store.state.isAnimating;
   }
 
   open() {
